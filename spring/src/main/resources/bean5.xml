@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <bean id="student" class="com.hdu.xml.entity.Student">
+        <property name="courses">
+            <array>
+                <value>zxc</value>
+                <value>qwe</value>
+            </array>
+        </property>
+        <property name="list" ref="stulist"></property>
+        <property name="map">
+            <map>
+                <entry key="key1" value="val1"></entry>
+                <entry key="key2" value="val2"></entry>
+            </map>
+        </property>
+    </bean>
+    <util:list id="stulist">
+        <value>123</value>
+        <value>45zxx6</value>
+    </util:list>
+    <bean id="factory" class="com.hdu.xml.entity.FactoryBeanTest"></bean>
+</beans>
