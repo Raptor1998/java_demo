@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hdu.mapper.BookMapperPlus">
+    <cache></cache>
+    <!--  级联属性  -->
+    <resultMap id="BookWithUser" type="com.hdu.entity.Book">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="userId" property="author.id"/>
+        <result column="username" property="author.username"/>
+        <result column="password" property="author.password"/>
+    </resultMap>
+    <!--BookWithUserAssociation-->
+    <resultMap id="BookWithUserAssociation" type="com.hdu.entity.Book">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <association javaType="com.hdu.entity.Author" property="author">
+            <id column="userId" property="id"/>
+            <result column="username" property="username"/>
+            <result column="address" property="address"/>
+            <result column="password" property="password"/>
+        </association>
+    </resultMap>
+    <!--  Book findByIdWithUser(int id);  -->
+    <select id="findByIdWithUser" resultMap="BookWithUserAssociation">
+        select b.id       id,
+               b.name     name,
+               b.price    price,
+               b.user_id  userId,
+               u.username username,
+               u.address  address,
+               u.password password
+        from book b
+                 left join user u on u.id = b.user_id
+        where b.id = #{id}
+    </select>
+
+
+    <!--  分步查询
+        按照员工id查出员工信息
+        根据userID查询userID
+     -->
+    <resultMap id="BookWithUserStep" type="com.hdu.entity.Book">
+        <id property="id" column="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <!--    定义关联对象的封装规则
+           select 表明当前属性是调用select 封装
+           column 将那一列的值传递给这个方法
+           -->
+        <association property="author" select="com.hdu.mapper.AuthorMapper.findById" column="userId"></association>
+    </resultMap>
+    <!--  Book findByIdWithUserStep(int id);  -->
+    <select id="findByIdWithUserStep" resultMap="BookWithUserStep">
+        select id id, name name, price price, user_id userId
+        from book
+        where id = #{id}
+    </select>
+
+    <!--  延迟加载
+      分步查询的基础上
+     -->
+
+    <select id="findByUserId" resultType="com.hdu.entity.Book">
+        select *
+        from book
+        where user_id = #{userId}
+    </select>
+    <!--
+        鉴别器
+      -->
+
+    <resultMap id="BookWithUserDis" type="com.hdu.entity.Book">
+        <id property="id" column="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <discriminator javaType="int" column="price">
+            <case value="20" resultType="com.hdu.entity.Book">
+                <association property="author" select="com.hdu.mapper.AuthorMapper.findById" column="userId"></association>
+            </case>
+            <case value="30" resultType="com.hdu.entity.Book">
+                <id property="id" column="id"/>
+            </case>
+        </discriminator>
+    </resultMap>
+</mapper>

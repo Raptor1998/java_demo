@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hdu.mapper.BookMapper">
+
+    <select id="queryById" resultType="com.hdu.entity.Book">
+        select * from book where id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.hdu.entity.Book" useGeneratedKeys="true" keyProperty="id">
+        insert into book(name,price) values(#{book.name},#{book.price})
+    </insert>
+
+    <update id="update">
+        update book set name = #{name},price = #{price} where id = #{id}
+    </update>
+
+    <delete id="delete" >
+        delete from book where id = #{id}
+    </delete>
+    <select id="queryByIdAndName" resultType="com.hdu.entity.Book" >
+        select * from book where id = #{id} and name = #{name}
+    </select>
+    <select id="queryAll" resultType="com.hdu.entity.Book">
+        select * from book
+    </select>
+</mapper>

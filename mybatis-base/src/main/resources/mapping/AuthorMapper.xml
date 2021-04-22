@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hdu.mapper.AuthorMapper">
+
+
+    <!-- Author findById(int id);   -->
+    <select id="findById" resultType="com.hdu.entity.Author">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
+    <!--  查询author时查询book  -->
+    <resultMap id="AuthorWithBook" type="com.hdu.entity.Author">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="address" property="address"/>
+        <collection property="bookList" ofType="com.hdu.entity.Book">
+            <id column="bookId" property="id"/>
+            <result column="name" property="name"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+    <select id="findByIdWithBook" resultMap="AuthorWithBook">
+        select u.id       id,
+               u.username username,
+               u.address  address,
+               b.id       bookId,
+               b.name     name,
+               b.price    price
+        from user u
+                 left join book b on b.user_id = u.id
+        where u.id = #{id}
+    </select>
+
+
+    <resultMap id="AuthorWithBookStep" type="com.hdu.entity.Author">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="address" property="address"/>
+        <collection property="bookList" select="com.hdu.mapper.BookMapperPlus.findByUserId" column="{userId=id}"
+                    fetchType="eager"></collection>
+    </resultMap>
+
+    <select id="findByIdWithBookStep" resultMap="AuthorWithBookStep">
+        select *
+        from user u
+        where u.id = #{id}
+    </select>
+
+    <!--  List<Author> findByCondition(Author author);  -->
+    <!--    <select id="findByCondition" resultType="com.hdu.entity.Author">-->
+    <!--        select *-->
+    <!--        from user-->
+    <!--        <where>-->
+    <!--        <if test="id != null and id != 0">id = #{id}</if>-->
+    <!--        <if test="username != null">and username like concat ('%',#{username},'%')</if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+
+    <select id="findByCondition" resultType="com.hdu.entity.Author">
+        select *
+        from user
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id != null and id != 0">id = #{id} and</if>
+            <if test="username != null">username like concat ('%',#{username},'%')</if>
+        </trim>
+    </select>
+
+    <!-- List<Author> findByConditionList(List<String> usernames);   -->
+    <select id="findByConditionList" resultType="com.hdu.entity.Author">
+        select * from user where username in
+        <foreach collection="list" item="item_username" separator="," open="(" close=")">
+            #{item_username}
+        </foreach>
+    </select>
+
+
+    <select id="addUsers">
+        insert into user(<include refid="AuthorColumn"></include>)
+        values
+        <foreach collection="authors" item="author" separator=",">
+            (#{author.username},#{author.address},#{author.password})
+        </foreach>
+    </select>
+
+    <!--  抽取可重用sql  -->
+    <sql id="AuthorColumn">
+        username,address,password
+    </sql>
+</mapper>
