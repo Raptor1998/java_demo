@@ -1,8 +1,8 @@
 package com.hdu;
 
-import com.hdu.mapper.BankMapper;
 import com.hdu.entity.domain.Bank;
 import com.hdu.entity.domain.BankExample;
+import com.hdu.mapper.BankMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -41,7 +41,7 @@ public class MapperTest {
     @Autowired
     BankMapper bankMapper;
 
-    //xxxExample就是封装查询条件的
+//    xxxExample就是封装查询条件的
     @Test
     public void context2(){
         BankExample bankExample = new BankExample();
@@ -53,5 +53,6 @@ public class MapperTest {
         List<Bank> banks = bankMapper.selectByExample(bankExample);
         System.out.println(banks);
     }
+
 
 }

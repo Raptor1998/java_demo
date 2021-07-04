@@ -5,6 +5,8 @@ import com.hdu.entity.enumerate.ResultEnum;
 import com.hdu.entity.result.Result;
 import com.hdu.exception.specificException.ParameterServiceException;
 import com.hdu.mapper.BankMapper;
+import com.hdu.service.BankService;
+import com.hdu.utils.ResultUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -23,20 +25,21 @@ import javax.validation.Valid;
 public class BankController {
 
 
-    BankMapper bankMapper;
+    BankService bankService;
 
     @Autowired
-    public BankController(BankMapper bankMapper) {
-        this.bankMapper = bankMapper;
+    public BankController(BankService bankService) {
+        this.bankService = bankService;
     }
+
 
     @ApiOperation("获取信息")
     @ApiImplicitParam(value = "要查询的ID", name = "id", dataType = "int", paramType = "path", required = true)
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public Result findOne(@PathVariable int id) {
-        Bank bank = bankMapper.selectByPrimaryKey(id);
+        Bank bank = bankService.findOne(id);
         if (!ObjectUtils.isEmpty(bank)) {
-            return null;
+            return ResultUtil.success(bank);
         }
         throw new ParameterServiceException(ResultEnum.INTERNAL_SERVER_ERROR);
     }
@@ -51,9 +54,20 @@ public class BankController {
 //    body -->放在请求体。请求参数的获取注解：@RequestBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Bank add(@Valid @RequestBody Bank bank, @RequestParam String hello) {
-        bankMapper.insert(bank);
+        bankService.add(bank);
         System.out.println(hello);
         return bank;
+    }
+    @ApiOperation("减少金额")
+    @ApiImplicitParam(value = "要减少的ID", name = "id", dataType = "int", paramType = "path", required = true)
+    @RequestMapping(value = "/sub/{id}",method = RequestMethod.POST)
+    public Result sub(@PathVariable int id) {
+        int sub = bankService.sub(id);
+        if(sub==1) {
+            return ResultUtil.success(null);
+        }else {
+            return ResultUtil.fail("困村不足");
+        }
     }
 
 }

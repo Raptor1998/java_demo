@@ -1,7 +1,5 @@
 package com.hdu.entity.result;
 
-import com.alibaba.fastjson.JSONObject;
-import com.hdu.entity.domain.Bank;
 import com.hdu.entity.enumerate.ResultEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

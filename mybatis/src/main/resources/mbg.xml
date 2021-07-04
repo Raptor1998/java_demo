@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-<!--    <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip"/>-->
+    <!--    <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip"/>-->
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
@@ -17,7 +17,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.hdu.entity" targetProject=".\src\main\java">
+        <javaModelGenerator targetPackage="com.hdu.entity.domain" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -30,7 +30,8 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="bank" domainObjectName="Bank">
-        </table>
+        <table tableName="bank" domainObjectName="Bank"/>
+        <table tableName="user" domainObjectName="User"/>
+        <table tableName="role" domainObjectName="Role"/>
     </context>
 </generatorConfiguration>
