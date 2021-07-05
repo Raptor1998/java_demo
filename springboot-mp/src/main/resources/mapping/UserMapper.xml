@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hdu.mapper.UserMapper">
+    
+    <resultMap id="UserWithRoles" type="com.hdu.entity.domain.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="status" column="status"/>
+        <collection property="roles" select="com.hdu.mapper.RoleMapper.findByUid" column="id" fetchType="eager"/>
+    </resultMap>
+    
+    <select id="findByUsername" resultMap="UserWithRoles">
+        select * from user where username = #{username}
+    </select>
+    
+</mapper>

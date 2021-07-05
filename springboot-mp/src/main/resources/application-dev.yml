@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/testdata?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: 123456
+  main:
+    lazy-initialization: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  security:
+    user:
+      name: raptor
+      password: 123456
+
+mybatis-plus:
+  type-aliases-package: com.hdu.entity.domain
+  mapper-locations: classpath:mapping/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  mapper-locations: classpath:mapping/*Mapper.xml
+#  type-aliases-package: com.hdu.entity.domain
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    com:
+      example:
+        mapper: DEBUG
+
+
+rsa:
+  key:
+    pubKeyFile: "E:\\material\\id_key_rsa.pub"
+    priKeyFile: "E:\\material\\id_key_rsa"
