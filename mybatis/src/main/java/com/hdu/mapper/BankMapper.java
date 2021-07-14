@@ -3,6 +3,8 @@ package com.hdu.mapper;
 import com.hdu.entity.domain.Bank;
 import com.hdu.entity.domain.BankExample;
 import java.util.List;
+
+import com.hdu.entity.domain.BankVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -97,4 +99,7 @@ public interface BankMapper {
     int updateByPrimaryKey(Bank record);
 
     void sub(int id);
+
+
+    BankVo findBankVoById(int id);
 }

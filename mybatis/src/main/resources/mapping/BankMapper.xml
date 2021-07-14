@@ -257,4 +257,12 @@
   <update id="sub" parameterType="int">
     update bank set money = money-1 where id = #{id}
   </update>
+
+  <select id="findBankVoById" parameterType="int" resultMap="bankVo">
+    select id,username from bank where id = #{id}
+  </select>
+  <resultMap id="bankVo" type="com.hdu.entity.domain.BankVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="name" />
+  </resultMap>
 </mapper>

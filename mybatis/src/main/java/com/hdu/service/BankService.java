@@ -1,6 +1,7 @@
 package com.hdu.service;
 
 import com.hdu.entity.domain.Bank;
+import com.hdu.entity.domain.BankVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,4 +17,6 @@ public interface BankService {
     Bank add(Bank bank);
 
     int sub(int id);
+    BankVo findBankVoById(int id);
+
 }
