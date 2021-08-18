@@ -3,8 +3,6 @@ package com.hdu.utils;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.Assert.*;
-
 /**
  * @author raptor
  * @description RsaUtilsTest

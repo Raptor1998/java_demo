@@ -1,13 +1,11 @@
 package com.hdu.service.impl;
 
-import com.hdu.entity.domain.Role;
-import com.hdu.entity.domain.User;
-import com.hdu.mapper.RoleMapper;
-import com.hdu.mapper.UserMapper;
+import com.hdu.entity.domain.SysUser;
+import com.hdu.mapper.SysRoleMapper;
+import com.hdu.mapper.SysUserMapper;
 import com.hdu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +17,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
+    private final SysUserMapper userMapper;
+    private final SysRoleMapper roleMapper;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, RoleMapper roleMapper) {
+    public UserServiceImpl(SysUserMapper userMapper, SysRoleMapper roleMapper) {
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
     }
 
+
+
+
     @Override
-    public User findByUsername(String username) {
+    public SysUser findByUsername(String username) {
         return userMapper.findByUsername(username);
     }
 

@@ -1,34 +1,30 @@
 package com.hdu.entity.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author raptor
- * @description Role
- * @date 2021/4/24 19:11
+ * @version V1.0
+ * @Package com.hdu.domain.entity
+ * @date 2021/1/31 8:59
  */
-public class Role implements GrantedAuthority , Serializable {
+@Lazy(value = false)
+public class SysRole implements GrantedAuthority {
+
     private Integer id;
+
     private String roleName;
+
     private String roleDesc;
 
-    @JsonIgnore
-    @Override
-    public String getAuthority() {
-        return null;
-    }
-
-    public Role() {
-    }
-
-    public Role(Integer id, String roleName, String roleDesc) {
-        this.id = id;
-        this.roleName = roleName;
-        this.roleDesc = roleDesc;
-    }
+    @JsonIgnoreProperties(value = {"roles"})
+    private List<SysUser> users = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -54,9 +50,24 @@ public class Role implements GrantedAuthority , Serializable {
         this.roleDesc = roleDesc;
     }
 
+    @JsonIgnore
+    @Override
+    public String getAuthority() {
+        return roleName;
+    }
+
+
+    public List<SysUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<SysUser> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
-        return "Role{" +
+        return "SysRole{" +
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
                 ", roleDesc='" + roleDesc + '\'' +

@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: dev
+
+jwt:
+  secret: d29qaXVzaGl6aGV0aWFvamllenVpbGlhbmdkZXphaWxhbGxhbGE=
+  expiration: 1000
+  header: Authorization

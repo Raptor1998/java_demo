@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Result<T> {
     @ApiModelProperty(value = "状态码",example = "A0500")
     private String code;
-    @ApiModelProperty(value = "返回信息",example = "A开头摊上事了")
+    @ApiModelProperty(value = "返回信息",example = "用户请求服务异常")
     private String msg;
     @ApiModelProperty(value = "所需数据",example = "null")
     private T data;

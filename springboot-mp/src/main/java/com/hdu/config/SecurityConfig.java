@@ -3,6 +3,8 @@ package com.hdu.config;
 
 import com.hdu.filter.JwtLoginFilter;
 import com.hdu.filter.JwtVerifyFilter;
+import com.hdu.filter.access.RestAuthorizationEntryPoint;
+import com.hdu.filter.access.RestfulAccessDeniedHandler;
 import com.hdu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RsaKeyProperties rsaKeyProperties;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
+
+    @Autowired
+    private RestAuthorizationEntryPoint restAuthorizationEntryPoint;
+
+    @Autowired
+    private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+
+
     @Bean
     public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
@@ -44,11 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 全局配置：忽略url
-        web.ignoring().antMatchers("/user/register","/v2/api-docs",
-                "/swagger-resources/configuration/ui",
-                "/swagger-resources",
-                "/swagger-resources/configuration/security",
-                "/swagger-ui.html");
+        web.ignoring().antMatchers("/user/get/token", "/register");
 
     }
 
@@ -60,11 +69,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JwtLoginFilter(super.authenticationManager(), rsaKeyProperties))
-                .addFilter(new JwtVerifyFilter(super.authenticationManager(), rsaKeyProperties))
+                .addFilter(new JwtLoginFilter(super.authenticationManager(),jwtProperties))
+                .addFilter(new JwtVerifyFilter(super.authenticationManager(),jwtProperties))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
-
+        http.exceptionHandling()
+                .accessDeniedHandler(restfulAccessDeniedHandler)
+                .authenticationEntryPoint(restAuthorizationEntryPoint);
         // 开启跨域
         http.cors().configurationSource(corsConfigurationSource());
     }

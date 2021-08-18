@@ -1,6 +1,7 @@
 package com.hdu.utils;
 
 
+import com.hdu.config.JwtProperties;
 import com.hdu.entity.pojo.Payload;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -34,6 +35,16 @@ public class JwtUtils {
                 .compact();
     }
 
+
+    public static String generateTokenExpireInMinutes(Object userInfo, JwtProperties jwtProperties) {
+        return Jwts.builder()
+                .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
+                .setId(createJTI())
+                .setExpiration(DateTime.now().plusMinutes(jwtProperties.getExpiration()).toDate())
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
+                .compact();
+    }
+
     /**
      * 私钥加密token
      *
@@ -62,6 +73,10 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
     }
 
+    private static Jws<Claims> parserToken(String token, String publicKey) {
+        return Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
+    }
+
     private static String createJTI() {
         return new String(Base64.getEncoder().encode(UUID.randomUUID().toString().getBytes()));
     }
@@ -75,6 +90,16 @@ public class JwtUtils {
      */
     public static <T> Payload<T> getInfoFromToken(String token, PublicKey publicKey, Class<T> userType) {
         Jws<Claims> claimsJws = parserToken(token, publicKey);
+        Claims body = claimsJws.getBody();
+        Payload<T> claims = new Payload<>();
+        claims.setId(body.getId());
+        claims.setUserInfo(JsonUtils.toBean(body.get(JWT_PAYLOAD_USER_KEY).toString(), userType));
+        claims.setExpiration(body.getExpiration());
+        return claims;
+    }
+
+    public static <T> Payload<T> getInfoFromToken(String token, JwtProperties jwtProperties, Class<T> userType) {
+        Jws<Claims> claimsJws = parserToken(token, jwtProperties.getSecret());
         Claims body = claimsJws.getBody();
         Payload<T> claims = new Payload<>();
         claims.setId(body.getId());

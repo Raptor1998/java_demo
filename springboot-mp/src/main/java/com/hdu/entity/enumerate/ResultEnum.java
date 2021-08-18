@@ -2,28 +2,28 @@ package com.hdu.entity.enumerate;
 
 
 /**
- * @author Administrator
+ * @author raptor
  */
 
 public enum ResultEnum {
 
     SUCCESS("00000", "请求成功"),
-
     LOGIN_FAIL("A0210", "认证失败"),
-
     FAIL("00001", "默认错误"),
-
-    ACCESS_DENIED("A0301", "访问未授权"),
-
-    Invalid_Request_Parameter("A0410", "请求必填参数为空"),
-
-    INTERNAL_SERVER_ERROR("B0001", "系统执行出错"),
-
+    LOGIN_EXCEPTION("A0200", "用户登录异常"),
+    AUTHORIZED_FAILED("A0220","用户身份校验失败"),
+    WRONG_PASSWORD("A0210", "用户密码错误"),
+    ACCESS_NOT_AUTHORIZED("A0301", "访问未授权"),
+    AUTHORIZED_EXPIRED("A0311", "授权已过期"),
+    NO_PERMISSION_USE("A0312", "无权限使用"),
+    Invalid_Request_Parameter("A0421", "请求必填参数为空"),
     Method_Argument_Type_Mismatch_Exception("A0400", "用户请求参数错误"),
+    INTERNAL_SERVER_ERROR("B0001", "系统执行出错"),
+    SQL_Integrity_Constraint_Violation_Exception("C0300", "数据库插入错误"),
+    UNKNOWN_ERROR("D0500", "系统未知的错误"),
 
-    SQL_Integrity_Constraint_Violation_Exception("C0300","数据库插入错误"),
 
-    UNKNOWN_ERROR("D0500", "系统未知的错误");
+    USER_NOT_EXIST("U0100", "用户不存在");
 
 
     private String code;

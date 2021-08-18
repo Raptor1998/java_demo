@@ -1,6 +1,6 @@
 package com.hdu.service;
 
-import com.hdu.entity.domain.User;
+import com.hdu.entity.domain.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -10,5 +10,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date 2021/4/24 19:14
  */
 public interface UserService extends UserDetailsService {
-    User findByUsername(@Param("username") String username);
+    SysUser findByUsername(@Param("username") String username);
 }
