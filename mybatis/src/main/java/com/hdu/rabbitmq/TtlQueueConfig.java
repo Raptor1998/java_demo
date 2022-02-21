@@ -99,7 +99,7 @@ public class TtlQueueConfig {
         return QueueBuilder.durable(QUEUE_C).withArguments(args).build();
     }
 
-    //声明队列 B 绑定 X 交换机
+    //声明队列 C 绑定 X 交换机
     @Bean
     public Binding queuecBindingX(@Qualifier("queueC") Queue queueC,
                                   @Qualifier("xExchange") DirectExchange xExchange) {

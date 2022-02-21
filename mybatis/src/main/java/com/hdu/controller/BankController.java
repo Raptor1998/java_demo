@@ -7,8 +7,9 @@ import com.hdu.entity.result.Result;
 import com.hdu.exception.specificException.ParameterServiceException;
 import com.hdu.service.BankService;
 import com.hdu.utils.ResultUtil;
-import io.swagger.annotations.*;
-import org.springframework.amqp.core.Correlation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -81,7 +82,7 @@ public class BankController {
     @RequestMapping(value = "/mq", method = RequestMethod.GET)
     public void publisher(@RequestParam String message,@RequestParam String ttl) {
         System.out.println(new Date() + "发送消息" + message);
-        rabbitTemplate.convertAndSend("X","XC","消息来自"+ttl+"s的队列"+message, correlationData ->{
+        rabbitTemplate.convertAndSend("X","XA","消息来自"+ttl+"s的队列"+message, correlationData ->{
             correlationData.getMessageProperties().setExpiration(ttl);
             return correlationData;
         });

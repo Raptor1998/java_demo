@@ -4,13 +4,10 @@ import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -85,7 +82,7 @@ public class CacheController {
 //                return "error";
 //            }
 //            https://www.cnblogs.com/youngdeng/p/12883790.html
-            redissonLock.lock();
+//            redissonLock.lock();
             boolean b = redissonLock.tryLock(100, TimeUnit.SECONDS);
             System.out.println(b);
             if (b == false) {
@@ -94,9 +91,9 @@ public class CacheController {
             }
             int surplus = Integer.parseInt(stringRedisTemplate.opsForValue().get("shangpin"));
             if (surplus > 0) {
-                double random = Math.random();
-                int time = (int) (random * 1000);
-                Thread.sleep(time);
+//                double random = Math.random();
+//                int time = (int) (random * 1000);
+//                Thread.sleep(time);
                 int temp = surplus - 1;
                 stringRedisTemplate.opsForValue().set("shangpin", temp + "");
                 System.out.println("扣减成功，当前剩余" + temp);
